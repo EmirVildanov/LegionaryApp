@@ -30,7 +30,7 @@ class WelcomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 LegionaryAppTheme {
-                    MainMenuScreen()
+                    WelcomeScreen()
                 }
             }
         }
