@@ -72,7 +72,6 @@ private fun LegionaryTab(
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .animateContentSize()
             .height(TabHeight)
             .selectable(
                 selected = selected,
@@ -96,15 +95,10 @@ private fun LegionaryTab(
             colorFilter = if (selected) ColorFilter.tint(Color.Black) else null
         )
         if (selected) {
-            Spacer(Modifier.width(12.dp))
+//            Spacer(Modifier.width(12.dp))
             Text(text.uppercase(Locale.getDefault()))
         }
     }
 }
 
 private val TabHeight = 60.dp
-private const val InactiveTabOpacity = 0.60f
-
-private const val TabFadeInAnimationDuration = 150
-private const val TabFadeInAnimationDelay = 100
-private const val TabFadeOutAnimationDuration = 100

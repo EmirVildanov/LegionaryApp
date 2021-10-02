@@ -1,7 +1,9 @@
 package com.example.legionaryapp.components.tasks
 
+import android.R.attr
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,11 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
 import com.example.legionaryapp.data.UserRepository
-import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
+import androidx.compose.ui.text.style.TextOverflow
+
+import android.R.attr.maxLines
+import androidx.compose.ui.layout.ContentScale
+import com.example.legionaryapp.network.Task
+
 
 @Composable
-fun TasksBody() {
+fun TasksBody(
+    onTaskCategoryClick: () -> Unit
+) {
     val progress = remember { mutableStateOf(1f) }
 
     Column(
@@ -39,19 +48,19 @@ fun TasksBody() {
     ) {
         TasksHeader(
             modifier = Modifier
-                .weight(2f)
+                .weight(3f)
                 .fillMaxWidth(),
             progress = progress.value
         )
         InterestTasks(
             modifier = Modifier
-                .weight(1f)
+                .weight(2f)
                 .padding(15.dp)
                 .fillMaxWidth()
         )
         DeadlineTasks(
             modifier = Modifier
-                .weight(2f)
+                .weight(3f)
                 .padding(15.dp)
                 .fillMaxWidth()
         )
@@ -62,9 +71,10 @@ fun TasksBody() {
 fun TasksHeader(modifier: Modifier, progress: Float) {
     Card(modifier = modifier) {
         Image(
+            modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.blue_gradient_background),
             contentDescription = "gradientBackground",
-            modifier = Modifier.fillMaxSize()
+            contentScale = ContentScale.Crop
         )
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
@@ -88,7 +98,7 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                    text = "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+                    text = "На данной странице отображен перечень курсов, которые необходимо пройти пройти в процессе адаптации и знакомства с e-Legion",
                     color = Color.White
                 )
             }
@@ -110,8 +120,19 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LinearProgressIndicator(modifier = Modifier.weight(1f), progress = progress)
-                    Text(fontSize = 15.sp, text = "${progress.toInt()}%", color = Color.White)
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .weight(13f)
+                            .height(20.dp),
+                        progress = progress
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        modifier = Modifier.weight(2f),
+                        fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                        text = "${progress.toInt()}%",
+                        color = Color.White
+                    )
                 }
             }
         }
@@ -133,6 +154,7 @@ fun InterestTasks(modifier: Modifier) {
 
             items(myTasks) { task ->
                 InterestTaskCard(task)
+                Spacer(modifier = Modifier.width(15.dp))
             }
         }
     }
@@ -148,10 +170,17 @@ fun InterestTaskCard(task: Task) {
                 color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(25.dp)
             )
-            .padding(10.dp)
+            .width(200.dp)
+            .padding(10.dp),
     ) {
-        Text(text = task.title)
-        Text(text = "Description: ${task.description}")
+        Text(
+            modifier = Modifier.height(33.dp),
+            text = task.title,
+            fontSize = MaterialTheme.typography.h6.fontSize,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(text = task.description)
     }
 }
 
@@ -165,6 +194,7 @@ fun DeadlineTasks(modifier: Modifier) {
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(myTasks) { task ->
                 DeadlineTaskCard(task)
+                Spacer(modifier = Modifier.height(15.dp))
             }
         }
     }
@@ -175,7 +205,7 @@ fun DeadlineTaskCard(task: Task) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(150.dp)
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colors.primary,
@@ -183,9 +213,21 @@ fun DeadlineTaskCard(task: Task) {
             )
             .padding(25.dp)
     ) {
-        Text(text = task.title)
+        Text(
+            modifier = Modifier.height(33.dp),
+            text = task.title, fontSize = MaterialTheme.typography.h6.fontSize,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(text = task.title)
+            Text(
+                text = task.title,
+                color = Color.White,
+                modifier = Modifier
+                    .background(MaterialTheme.colors.primary)
+                    .padding(5.dp)
+            )
+            Spacer(modifier = Modifier.width(15.dp))
             Text(text = task.title)
         }
     }
@@ -195,6 +237,8 @@ fun DeadlineTaskCard(task: Task) {
 @Composable
 fun TasksBodyPreview() {
     LegionaryAppTheme {
-        TasksBody()
+        TasksBody {
+
+        }
     }
 }
