@@ -1,5 +1,6 @@
 package com.example.legionaryapp.components.welcome
 
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,7 +13,9 @@ import com.example.legionaryapp.components.MainScreen
 import com.example.legionaryapp.components.tasks.TasksBody
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.navigation.LegionaryScreen
+import com.example.legionaryapp.network.RestException
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
