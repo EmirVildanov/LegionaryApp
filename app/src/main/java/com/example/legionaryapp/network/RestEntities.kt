@@ -13,14 +13,6 @@ data class User(val id: Int, val name: String)
 
 @Serializable
 @Immutable
-data class DeadlineType(
-    val id: Int,
-    val shortName: String,
-    val daysNumber: Int
-)
-
-@Serializable
-@Immutable
 data class Category(
     val id: Int,
     val name: String,
@@ -33,13 +25,20 @@ data class Task(
     val id: Int,
     val title: String,
     val description: String,
-//    val deadlineType: DeadlineType,
+    @SerialName("deadline_type") val deadlineType: DeadlineType = DeadlineType.Week, // default value is needed for mock data lol
     val category: Category,
     @SerialName("is_important") val isImportant: Boolean,
 //    val isReachable: Boolean,
 //    val assignedUser: User,
     @SerialName("is_completed") var isComplete: Boolean
 )
+
+@Serializable
+enum class DeadlineType(val daysNumber: Int) {
+    @SerialName("7") Week(7),
+    @SerialName("30") Month(30),
+    @SerialName("90") Full(90),
+}
 
 @Serializable
 data class Progress(val general: Int)
