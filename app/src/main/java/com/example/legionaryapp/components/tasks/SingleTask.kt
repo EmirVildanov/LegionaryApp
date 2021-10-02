@@ -8,5 +8,5 @@ import com.example.legionaryapp.network.Task
 fun SingleTask(task: Task) {
     Text(task.title)
     Text("Description: ${task.description}")
-    Text("Deadline: ${task.deadlineType.shortName}")
+    Text("Deadline: ${task.description}")
 }

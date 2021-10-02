@@ -12,7 +12,11 @@ import kotlin.Exception
 
 private val client = HttpClient(OkHttp.create()) {
     install(JsonFeature) {
-        serializer = KotlinxSerializer()
+        serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+            prettyPrint = true
+            isLenient = true
+            ignoreUnknownKeys = true
+        })
     }
 }
 
@@ -38,9 +42,9 @@ suspend fun UserSession.me(): User = makeRequest {
 }
 
 suspend fun UserSession.myTasks(): List<Task> = makeRequest {
-    client.get<List<Task>>(MY_TASKS_ENDPOINT) {
+    client.get<GarbageRestResponse<List<Task>>>(MY_TASKS_ENDPOINT) {
         includeAuth(this@myTasks)
-    }
+    }.data
 }
 
 suspend fun UserSession.updateTaskStatus(taskId: Int, newIsComplete: Boolean) = makeRequest {

@@ -1,5 +1,6 @@
 package com.example.legionaryapp.data
 
+import android.util.Log
 import com.example.legionaryapp.network.*
 import timber.log.Timber
 
@@ -23,6 +24,7 @@ object UserRepository {
         fetchedMe = session?.me() ?: notSignedIn()
         myTasks = session?.myTasks() ?: notSignedIn()
         Timber.Forest.log(5, "Fetched")
+        Log.d("Fetch", "fetched everything")
     }
 }
 
