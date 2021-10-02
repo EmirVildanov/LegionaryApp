@@ -47,6 +47,12 @@ suspend fun UserSession.myTasks(): List<Task> = makeRequest {
     }.data
 }
 
+suspend fun UserSession.myProgress(): Int = makeRequest {
+    client.get<Progress>(PROGRESS_ENDPOINT) {
+        includeAuth(this@myProgress)
+    }.general
+}
+
 suspend fun UserSession.updateTaskStatus(taskId: Int, newIsComplete: Boolean) = makeRequest {
     client.get<List<Task>>(MY_TASKS_ENDPOINT) {
         includeAuth(this@updateTaskStatus)

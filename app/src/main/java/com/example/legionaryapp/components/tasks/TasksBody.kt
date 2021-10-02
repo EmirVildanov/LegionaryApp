@@ -1,5 +1,7 @@
 package com.example.legionaryapp.components.tasks
 
+import android.R.attr
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,6 +33,8 @@ import androidx.compose.ui.layout.ContentScale
 import com.example.legionaryapp.data.mockCategories
 import com.example.legionaryapp.data.mockTasks
 import com.example.legionaryapp.network.Category
+import com.example.legionaryapp.data.categories
+import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
 
 
@@ -39,7 +43,7 @@ fun TasksBody(
     myTasks: MutableState<List<Task>>,
     onCategoryClick: (Int) -> Unit
 ) {
-    val progress = remember { mutableStateOf(1f) }
+    val progress by remember { UserRepository.myProgress }
 
     Column(
         modifier = Modifier
@@ -49,7 +53,7 @@ fun TasksBody(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxWidth(),
-            progress = progress.value
+            progress = progress.toFloat()
         )
         Categories(
             modifier = Modifier
@@ -112,7 +116,7 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
             ) {
                 Text(
                     fontSize = MaterialTheme.typography.h5.fontSize,
-                    text = "Прогесс",
+                    text = "Прогресс",
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
@@ -163,6 +167,8 @@ fun Categories(
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
+            items(myTasks.categories()) { category ->
+                InterestTaskCard(category)
             items(mockCategories) { category ->
                 TaskCategoryCard(
                     category = category,
