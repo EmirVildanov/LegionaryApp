@@ -43,3 +43,9 @@ data class Task(
 
 @Serializable
 data class Progress(val general: Int)
+
+@Serializable
+data class UpdateTaskStatus(
+    @SerialName("task_id") val taskId: Int,
+    @SerialName("is_complete") val isComplete: Boolean
+)

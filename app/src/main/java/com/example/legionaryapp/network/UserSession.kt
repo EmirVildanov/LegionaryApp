@@ -54,9 +54,10 @@ suspend fun UserSession.myProgress(): Int = makeRequest {
 }
 
 suspend fun UserSession.updateTaskStatus(taskId: Int, newIsComplete: Boolean) = makeRequest {
-    client.get<List<Task>>(MY_TASKS_ENDPOINT) {
+    client.post<Any>(MY_TASKS_ENDPOINT) {
         includeAuth(this@updateTaskStatus)
         contentType(ContentType.Application.Json)
+        body = UpdateTaskStatus(taskId = taskId, isComplete = newIsComplete)
     }
 }
 
