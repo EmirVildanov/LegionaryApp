@@ -39,5 +39,6 @@ object UserRepository {
 fun List<Task>.categories() = map { it.category }.distinct()
 fun List<Task>.filterByCategory(category: Category) = filter { it.category  == category }
 fun List<Task>.filterByDeadlineType(deadLineInterval: DeadlineInterval) = filter { it == it }
+fun List<Task>.progress(): Int = filter { it.isComplete }.size * 100 / size
 
 private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")

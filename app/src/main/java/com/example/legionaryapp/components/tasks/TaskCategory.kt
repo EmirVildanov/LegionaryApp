@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.data.filterByCategory
 import com.example.legionaryapp.data.filterByDeadlineType
+import com.example.legionaryapp.data.progress
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.ui.theme.Grey
 
@@ -27,12 +28,16 @@ fun TaskCategory(category: Category) {
         mutableStateOf(DeadlineInterval.WeekTab)
     }
 
+    val myTasks = remember { UserRepository.myTasks }
+
+    val tasksByCategory = myTasks.value.filterByCategory(category)
+
     Column(modifier = Modifier.fillMaxSize()) {
         SectionHeader(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxWidth(),
-            progress = 0.5f,
+            progress = tasksByCategory.progress().toFloat(),
             title = listOf(category.name),
             subtitle = category.description,
             titleTopPadding = 30.dp
@@ -46,7 +51,7 @@ fun TaskCategory(category: Category) {
                 .weight(4f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            myTasks = UserRepository.myTasks.value.filterByCategory(category)
+            myTasks = tasksByCategory
                 .filterByDeadlineType(DeadlineInterval.WeekTab),
             includeHeader = false
         )
