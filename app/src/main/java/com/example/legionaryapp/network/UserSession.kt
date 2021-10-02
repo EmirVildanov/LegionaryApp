@@ -4,12 +4,17 @@ import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.websocket.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import java.lang.Exception
+import kotlin.Exception
 
-private val client = HttpClient(OkHttp.create()) {}
+private val client = HttpClient(OkHttp.create()) {
+    install(JsonFeature) {
+        serializer = KotlinxSerializer()
+    }
+}
 
 data class UserSession(val id: Int) {
     suspend fun <T> makeRequest(request: suspend UserSession.() -> T) = wrapException { request() }
@@ -50,4 +55,6 @@ private suspend fun <T> wrapException(f: suspend () -> T): T = try {
     throw RestException(e)
 }
 
-class RestException(e: Exception) : Exception(e)
+class RestException(e: Exception) : Exception(e) {
+    constructor(msg: String) : this(Exception(msg))
+}

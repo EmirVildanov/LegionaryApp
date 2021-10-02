@@ -24,9 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
-import com.example.legionaryapp.data.Task
-import com.example.legionaryapp.data.User
 import com.example.legionaryapp.data.UserRepository
+import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 
 @Composable
@@ -128,7 +127,7 @@ fun InterestTasks(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
-            items(UserRepository.tasks) { task ->
+            items(UserRepository.myTasks) { task ->
                 InterestTaskCard(task)
             }
         }
@@ -147,8 +146,8 @@ fun InterestTaskCard(task: Task) {
             )
             .padding(10.dp)
     ) {
-        Text(text = task.name)
-        Text(text = "Manager: ${task.managerName}")
+        Text(text = task.title)
+        Text(text = "Description: ${task.description}")
     }
 }
 
@@ -158,7 +157,7 @@ fun DeadlineTasks(modifier: Modifier) {
         Text(text = "Ближайшие задачи", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(UserRepository.tasks) { task ->
+            items(UserRepository.myTasks) { task ->
                 DeadlineTaskCard(task)
             }
         }
@@ -178,10 +177,10 @@ fun DeadlineTaskCard(task: Task) {
             )
             .padding(25.dp)
     ) {
-        Text(text = task.name)
+        Text(text = task.title)
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(text = task.name)
-            Text(text = task.name)
+            Text(text = task.title)
+            Text(text = task.title)
         }
     }
 }

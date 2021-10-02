@@ -68,7 +68,7 @@ fun LegionaryNavHost(
         }
 
         val tasksName = LegionaryScreen.Tasks.name
-        val tasksNameArgument = "name"
+        val tasksNameArgument = "id"
         composable(
             route = "$tasksName/{$tasksNameArgument}",
             arguments = listOf(
@@ -76,20 +76,22 @@ fun LegionaryNavHost(
                     type = NavType.StringType
                 }
             ),
-            deepLinks =  listOf(navDeepLink {
-                uriPattern = "rally://$tasksName/{name}"
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "rally://$tasksName/{$tasksNameArgument}"
             })
         ) { entry ->
-            val taskName = entry.arguments?.getString(tasksNameArgument)
-            val task = UserRepository.getTask(taskName)
-            SingleTask(task = task)
+            val task = entry.arguments?.getInt(tasksNameArgument)
+                ?.let { taskId -> UserRepository.task(taskId) }
+            if (task != null) {
+                SingleTask(task = task)
+            }
         }
     }
 }
 
 private fun navigateToSingleTask(
     navController: NavHostController,
-    taskName: String
+    taskId: Int
 ) {
-    navController.navigate("${LegionaryScreen.Tasks.name}/$taskName")
+    navController.navigate("${LegionaryScreen.Tasks.name}/$taskId")
 }

@@ -1,68 +1,27 @@
 package com.example.legionaryapp.data
 
-import androidx.compose.runtime.Immutable
-
-sealed class User {
-    @Immutable
-    data class LoggedInUser(val email: String) : User()
-    object GuestUser : User()
-    object NoUserLoggedIn : User()
-}
+import com.example.legionaryapp.network.*
 
 object UserRepository {
+    private var session: UserSession? = null
+    private var fetchedMe: User? = null
 
-    private var _user: User = User.NoUserLoggedIn
-    val user: User
-        get() = _user
+    val me: User
+        get() = fetchedMe ?: notSignedIn()
 
-    var tasks: List<Task> = listOf(
-        Task(
-            "Task1",
-            100,
-            "Emir Vildanov"
-        ),
-        Task(
-            "Task2",
-            200,
-            "Egor Porsev"
-        ),
-        Task(
-            "Task3",
-            300,
-            "Ilya Barutkin"
-        ),
-        Task(
-            "Task4",
-            400,
-            "Emir Vildanov"
-        ),
-        Task(
-            "Task5",
-            500,
-            "Emir Vildanov"
-        )
-    )
+    var myTasks: List<Task> = emptyList()
+        private set
 
-    fun getTask(taskName: String?): Task {
-        return tasks.first { it.name == taskName }
+    suspend fun signIn(id: Int) {
+        session = logIn(id)
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun signIn(email: String, password: String) {
-        _user = User.LoggedInUser(email)
-    }
+    fun task(id: Int): Task? = myTasks.find { it.id == id }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun signUp(email: String, password: String) {
-        _user = User.LoggedInUser(email)
-    }
-
-    fun signInAsGuest() {
-        _user = User.GuestUser
-    }
-
-    fun isKnownUserEmail(email: String): Boolean {
-        // if the email contains "sign up" we consider it unknown
-        return !email.contains("signup")
+    suspend fun fetchEverything() {
+        fetchedMe = session?.me() ?: notSignedIn()
+        myTasks = session?.myTasks() ?: notSignedIn()
     }
 }
+
+private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")

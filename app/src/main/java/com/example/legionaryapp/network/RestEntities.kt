@@ -1,11 +1,14 @@
 package com.example.legionaryapp.network
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Immutable
 data class User(val id: Int, val name: String)
 
 @Serializable
+@Immutable
 data class DeadlineType(
     val id: Int,
     val shortName: String,
@@ -13,6 +16,7 @@ data class DeadlineType(
 )
 
 @Serializable
+@Immutable
 data class Category(
     val id: Int,
     val name: String,
@@ -20,6 +24,7 @@ data class Category(
 )
 
 @Serializable
+@Immutable
 data class Task(
     val id: Int,
     val title: String,
