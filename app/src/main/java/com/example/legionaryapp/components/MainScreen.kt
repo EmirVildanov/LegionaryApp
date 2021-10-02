@@ -18,6 +18,7 @@ import com.example.legionaryapp.components.tasks.TasksBody
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.data.categories
 import com.example.legionaryapp.navigation.LegionaryScreen
+import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 
@@ -37,7 +38,7 @@ fun MainScreen() {
                     onTabSelected = { screen ->
                         navController.navigate(screen.name)
                         selectedTab.value = screen
-                                    },
+                    },
                     selectedTab = selectedTab.value
                 )
             }
@@ -59,7 +60,11 @@ fun LegionaryNavHost(
 ) {
     val selectedCategory = remember {
         mutableStateOf(
-            myTasks.value.first().category
+            myTasks.value.firstOrNull()?.category ?: Category(
+                id = -1,
+                name = "EMPTY",
+                description = ""
+            )
         )
     }
 

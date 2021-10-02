@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.data.categories
-import com.example.legionaryapp.data.mockTasks
+import com.example.legionaryapp.data.sortedByRelevance
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
@@ -68,7 +68,7 @@ fun TasksBody(
                 .weight(3f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            myTasks = myTasks.value
+            myTasks = myTasks.value.sortedByRelevance()
         )
     }
 }
@@ -298,7 +298,7 @@ fun DeadlineTaskCard(task: Task) {
             )
             Spacer(modifier = Modifier.width(15.dp))
             Text(
-                text = "Завтра",
+                text = task.deadlineType.toString(),
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 color = MaterialTheme.colors.onSurface
             )

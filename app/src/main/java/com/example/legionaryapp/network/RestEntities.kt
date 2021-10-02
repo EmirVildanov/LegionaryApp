@@ -34,10 +34,21 @@ data class Task(
 )
 
 @Serializable
-enum class DeadlineType(val daysNumber: Int) {
-    @SerialName("7") Week(7),
-    @SerialName("30") Month(30),
-    @SerialName("90") Full(90),
+enum class DeadlineType(val daysNumber: Int) : Comparable<DeadlineType> {
+    @SerialName("7")
+    Week(7) {
+        override fun toString(): String = "Неделя 1"
+    },
+
+    @SerialName("30")
+    Month(30) {
+        override fun toString(): String = "Месяц 1"
+    },
+
+    @SerialName("90")
+    Full(90) {
+        override fun toString(): String = "Месяц 3"
+    };
 }
 
 @Serializable

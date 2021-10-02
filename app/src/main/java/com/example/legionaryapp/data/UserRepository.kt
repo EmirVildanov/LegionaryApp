@@ -2,7 +2,7 @@ package com.example.legionaryapp.data
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.example.legionaryapp.components.tasks.DeadlineInterval
+import com.example.legionaryapp.components.tasks.DeadlineTab
 import com.example.legionaryapp.network.*
 import timber.log.Timber
 
@@ -38,7 +38,15 @@ object UserRepository {
 
 fun List<Task>.categories() = map { it.category }.distinct()
 fun List<Task>.filterByCategory(category: Category) = filter { it.category  == category }
-fun List<Task>.filterByDeadlineType(deadLineInterval: DeadlineInterval) = filter { it == it }
+fun List<Task>.filterByDeadlineType(deadlineType: DeadlineType) = filter { it.deadlineType == deadlineType }
+fun List<Task>.filterByDeadlineType(deadLineInterval: DeadlineTab) = filterByDeadlineType(deadLineInterval.deadlineType)
 fun List<Task>.progress(): Int = filter { it.isComplete }.size * 100 / size
+fun List<Task>.sortedByDeadline() = sortedBy { it.deadlineType.daysNumber }
+
+
+/**
+ * First -- more relevant.
+ */
+fun List<Task>.sortedByRelevance() = sortedByDeadline()
 
 private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")

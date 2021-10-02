@@ -14,18 +14,19 @@ import com.example.legionaryapp.data.filterByCategory
 import com.example.legionaryapp.data.filterByDeadlineType
 import com.example.legionaryapp.data.progress
 import com.example.legionaryapp.network.Category
+import com.example.legionaryapp.network.DeadlineType
 import com.example.legionaryapp.ui.theme.Grey
 
-enum class DeadlineInterval(val deadlineName: String) {
-    WeekTab("Ближайшие"),
-    MonthTab("Месяц"),
-    ThreeMonthTab("Три месяца")
+enum class DeadlineTab(val deadlineName: String, val deadlineType: DeadlineType) {
+    WeekTab("Ближайшие", DeadlineType.Week),
+    MonthTab("Месяц", DeadlineType.Month),
+    ThreeMonthTab("Три месяца", DeadlineType.Full)
 }
 
 @Composable
 fun TaskCategory(category: Category) {
     val currentTab = remember {
-        mutableStateOf(DeadlineInterval.WeekTab)
+        mutableStateOf(DeadlineTab.WeekTab)
     }
 
     val myTasks = remember { UserRepository.myTasks }
@@ -51,8 +52,7 @@ fun TaskCategory(category: Category) {
                 .weight(4f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            myTasks = tasksByCategory
-                .filterByDeadlineType(DeadlineInterval.WeekTab),
+            myTasks = tasksByCategory.filterByDeadlineType(currentTab.value),
             includeHeader = false
         )
     }
@@ -60,14 +60,14 @@ fun TaskCategory(category: Category) {
 
 @Composable
 fun DeadlineIntervalTabs(
-    currentTab: DeadlineInterval,
-    onTabSelection: (DeadlineInterval) -> Unit
+    currentTab: DeadlineTab,
+    onTabSelection: (DeadlineTab) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround
     ) {
-        for (value in DeadlineInterval.values()) {
+        for (value in DeadlineTab.values()) {
             DeadLineIntervalTab(
                 deadlineInterval = value,
                 onClick = onTabSelection,
@@ -79,9 +79,9 @@ fun DeadlineIntervalTabs(
 
 @Composable
 fun DeadLineIntervalTab(
-    deadlineInterval: DeadlineInterval,
-    onClick: (DeadlineInterval) -> Unit,
-    currentTab: DeadlineInterval
+    deadlineInterval: DeadlineTab,
+    onClick: (DeadlineTab) -> Unit,
+    currentTab: DeadlineTab
 ) {
     if (currentTab == deadlineInterval) {
         Text(

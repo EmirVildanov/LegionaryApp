@@ -1,20 +1,12 @@
 package com.example.legionaryapp.components.news
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.legionaryapp.components.guide.InfoCard
-import com.example.legionaryapp.components.tasks.DeadlineInterval
 import com.example.legionaryapp.components.tasks.DeadlineTasks
 import com.example.legionaryapp.components.tasks.SectionHeader
 import com.example.legionaryapp.data.UserRepository
-import com.example.legionaryapp.data.filterByCategory
-import com.example.legionaryapp.data.filterByDeadlineType
 
 @Composable
 fun NewsBody() {
