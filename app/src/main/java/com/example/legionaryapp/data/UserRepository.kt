@@ -9,17 +9,43 @@ sealed class User {
     object NoUserLoggedIn : User()
 }
 
-/**
- * Repository that holds the logged in user.
- *
- * In a production app, this class would also handle the communication with the backend for
- * sign in and sign up.
- */
 object UserRepository {
 
     private var _user: User = User.NoUserLoggedIn
     val user: User
         get() = _user
+
+    var tasks: List<Task> = listOf(
+        Task(
+            "Task1",
+            100,
+            "Emir Vildanov"
+        ),
+        Task(
+            "Task2",
+            200,
+            "Egor Porsev"
+        ),
+        Task(
+            "Task3",
+            300,
+            "Ilya Barutkin"
+        ),
+        Task(
+            "Task4",
+            400,
+            "Emir Vildanov"
+        ),
+        Task(
+            "Task5",
+            500,
+            "Emir Vildanov"
+        )
+    )
+
+    fun getTask(taskName: String?): Task {
+        return tasks.first { it.name == taskName }
+    }
 
     @Suppress("UNUSED_PARAMETER")
     fun signIn(email: String, password: String) {

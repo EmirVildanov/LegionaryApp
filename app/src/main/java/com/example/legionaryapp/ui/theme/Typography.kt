@@ -8,16 +8,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
 
-val MontserratFontFamily = FontFamily(
+val OpenSansFontFamily = FontFamily(
     listOf(
-        Font(R.font.montserrat_regular),
-        Font(R.font.montserrat_subrayada, FontWeight.Medium),
-        Font(R.font.montserrat_bold, FontWeight.SemiBold)
+        Font(R.font.open_sans),
+        Font(R.font.open_sans_semibold, FontWeight.SemiBold),
     )
 )
 
 val Typography = Typography(
-    defaultFontFamily = MontserratFontFamily,
+    defaultFontFamily = OpenSansFontFamily,
     h1 = TextStyle(
         fontWeight = FontWeight.W300,
         fontSize = 96.sp,
