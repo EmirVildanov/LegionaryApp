@@ -1,7 +1,5 @@
 package com.example.legionaryapp.components.tasks
 
-import android.R.attr
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,37 +11,26 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
-import com.example.legionaryapp.ui.theme.LegionaryAppTheme
-import androidx.compose.ui.text.style.TextOverflow
-
-import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import com.example.legionaryapp.data.mockCategories
+import com.example.legionaryapp.data.UserRepository
+import com.example.legionaryapp.data.categories
 import com.example.legionaryapp.data.mockTasks
 import com.example.legionaryapp.network.Category
-import androidx.compose.ui.unit.Dp
-import com.example.legionaryapp.data.categories
-import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import kotlinx.coroutines.runBlocking
 
 
@@ -69,7 +56,8 @@ fun TasksBody(
                 .weight(2f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            onCategoryClick = onCategoryClick
+            onCategoryClick = onCategoryClick,
+            myTasks = myTasks
         )
         DeadlineTasks(
             modifier = Modifier
@@ -156,6 +144,7 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
 @Composable
 fun Categories(
     modifier: Modifier,
+    myTasks: MutableState<List<Task>>,
     onCategoryClick: (Int) -> Unit
 ) {
     val selectedCategory = remember {
@@ -176,9 +165,7 @@ fun Categories(
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
-            items(myTasks.categories()) { category ->
-                InterestTaskCard(category)
-            items(mockCategories) { category ->
+            items(myTasks.value.categories()) { category ->
                 TaskCategoryCard(
                     category = category,
                     onCategorySelection = {
@@ -202,7 +189,6 @@ fun TaskCategoryCard(
     Column(
         modifier = Modifier
             .fillMaxHeight()
-            .shadow(4.dp, shape = RoundedCornerShape(26.dp), clip = true)
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colors.primary,
@@ -260,7 +246,7 @@ fun DeadlineTaskCard(task: Task) {
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(25.dp)
+                shape = RoundedCornerShape(5.dp)
             )
             .padding(25.dp),
         verticalArrangement = Arrangement.SpaceAround
@@ -303,14 +289,14 @@ fun DeadlineTaskCard(task: Task) {
                 fontSize = MaterialTheme.typography.h5.fontSize,
                 color = MaterialTheme.colors.onSurface
             )
-        }
-        Text(text = "isComplete = ${task.isComplete}")
-        OutlinedButton(onClick = {
-            runBlocking {
-                UserRepository.updateTaskStatus(task.id, !task.isComplete)
+            Text(text = "isComplete = ${task.isComplete}")
+            OutlinedButton(onClick = {
+                runBlocking {
+                    UserRepository.updateTaskStatus(task.id, !task.isComplete)
+                }
+            }) {
+                Text("Обновить статус")
             }
-        }) {
-            Text("Update status")
         }
     }
 }
