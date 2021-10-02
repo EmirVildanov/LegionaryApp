@@ -3,6 +3,8 @@ package com.example.legionaryapp.components
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -80,8 +82,10 @@ fun LegionaryNavHost(
                 uriPattern = "rally://$tasksName/{$tasksNameArgument}"
             })
         ) { entry ->
+            val myTasks by remember { UserRepository.myTasks }
+
             val task = entry.arguments?.getInt(tasksNameArgument)
-                ?.let { taskId -> UserRepository.task(taskId) }
+                ?.let { taskId -> myTasks.find { it.id == taskId } }
             if (task != null) {
                 SingleTask(task = task)
             }

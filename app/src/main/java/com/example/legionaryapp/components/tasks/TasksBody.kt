@@ -13,6 +13,7 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -119,6 +120,8 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
 
 @Composable
 fun InterestTasks(modifier: Modifier) {
+    val myTasks by remember { UserRepository.myTasks }
+
     Column(modifier = modifier) {
         Text(
             text = "Задачи",
@@ -127,7 +130,8 @@ fun InterestTasks(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
-            items(UserRepository.myTasks) { task ->
+
+            items(myTasks) { task ->
                 InterestTaskCard(task)
             }
         }
@@ -153,11 +157,13 @@ fun InterestTaskCard(task: Task) {
 
 @Composable
 fun DeadlineTasks(modifier: Modifier) {
+    val myTasks by remember { UserRepository.myTasks }
+
     Column(modifier = modifier) {
         Text(text = "Ближайшие задачи", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(UserRepository.myTasks) { task ->
+            items(myTasks) { task ->
                 DeadlineTaskCard(task)
             }
         }

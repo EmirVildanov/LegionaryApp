@@ -1,6 +1,10 @@
 package com.example.legionaryapp.data
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.legionaryapp.network.*
 import timber.log.Timber
 
@@ -8,23 +12,21 @@ object UserRepository {
     private var session: UserSession? = null
     private var fetchedMe: User? = null
 
-    val me: User
-        get() = fetchedMe ?: notSignedIn()
+    val me: MutableState<User?> = mutableStateOf(null)
 
-    var myTasks: List<Task> = emptyList()
-        private set
+    val myTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
 
     suspend fun signIn(id: Int) {
         session = logIn(id)
     }
 
-    fun task(id: Int): Task? = myTasks.find { it.id == id }
+    @Deprecated("NO")
+    fun task(id: Int): Task? = myTasks.component1().find { it.id == id }
 
     suspend fun fetchEverything() {
-        fetchedMe = session?.me() ?: notSignedIn()
-        myTasks = session?.myTasks() ?: notSignedIn()
+        me.value = session?.me() ?: notSignedIn()
+        myTasks.value = session?.myTasks() ?: notSignedIn()
         Timber.Forest.log(5, "Fetched")
-        Log.d("Fetch", "fetched everything")
     }
 }
 
