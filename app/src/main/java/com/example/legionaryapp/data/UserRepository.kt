@@ -20,9 +20,6 @@ object UserRepository {
         session = logIn(id)
     }
 
-    @Deprecated("NO")
-    fun task(id: Int): Task? = myTasks.component1().find { it.id == id }
-
     suspend fun fetchEverything() {
         me.value = session?.me() ?: notSignedIn()
         myTasks.value = session?.myTasks() ?: notSignedIn()
