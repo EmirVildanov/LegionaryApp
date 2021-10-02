@@ -42,6 +42,7 @@ fun List<Task>.filterByDeadlineType(deadlineType: DeadlineType) = filter { it.de
 fun List<Task>.filterByDeadlineType(deadLineInterval: DeadlineTab) = filterByDeadlineType(deadLineInterval.deadlineType)
 fun List<Task>.progress(): Int = filter { it.isComplete }.size * 100 / size
 fun List<Task>.sortedByDeadline() = sortedBy { it.deadlineType.daysNumber }
+fun List<Task>.isFirstWeekCompleted() = filter { it.deadlineType == DeadlineType.Week }.all { it.isComplete }
 
 
 /**

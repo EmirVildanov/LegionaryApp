@@ -31,7 +31,9 @@ data class Task(
 //    val isReachable: Boolean,
 //    val assignedUser: User,
     @SerialName("is_completed") var isComplete: Boolean
-)
+) {
+    fun isReachable(isFirstWeekCompleted: Boolean) = isFirstWeekCompleted || deadlineType == DeadlineType.Week
+}
 
 @Serializable
 enum class DeadlineType(val daysNumber: Int) : Comparable<DeadlineType> {

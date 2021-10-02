@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.data.categories
+import com.example.legionaryapp.data.isFirstWeekCompleted
 import com.example.legionaryapp.data.sortedByRelevance
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
@@ -95,9 +96,11 @@ fun SectionHeader(
                 .fillMaxWidth()
                 .padding(15.dp)
         ) {
-            Column(modifier = Modifier
-                .weight(4.5f)
-                .padding(top = titleTopPadding)) {
+            Column(
+                modifier = Modifier
+                    .weight(4.5f)
+                    .padding(top = titleTopPadding)
+            ) {
                 for (text in title) {
                     Text(
                         fontSize = MaterialTheme.typography.h5.fontSize,
@@ -251,6 +254,9 @@ fun DeadlineTasks(
 
 @Composable
 fun DeadlineTaskCard(task: Task) {
+
+    val myTasks by remember { UserRepository.myTasks }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -302,11 +308,14 @@ fun DeadlineTaskCard(task: Task) {
                 fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 color = MaterialTheme.colors.onSurface
             )
-            OutlinedButton(onClick = {
-                runBlocking {
-                    UserRepository.updateTaskStatus(task.id, !task.isComplete)
-                }
-            }) {
+            OutlinedButton(
+                onClick = {
+                    runBlocking {
+                        UserRepository.updateTaskStatus(task.id, !task.isComplete)
+                    }
+                },
+                enabled = task.isReachable(myTasks.isFirstWeekCompleted())
+            ) {
                 Text("*")
             }
         }
