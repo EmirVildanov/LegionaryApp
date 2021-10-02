@@ -26,8 +26,18 @@ object UserRepository {
     suspend fun fetchEverything() {
         me.value = session?.me() ?: notSignedIn()
         myTasks.value = session?.myTasks() ?: notSignedIn()
-        myProgress.value = session?.myProgress() ?: notSignedIn()
+        fetchProgress()
         Timber.Forest.log(5, "Fetched")
+    }
+
+    suspend fun fetchProgress() {
+        myProgress.value = session?.myProgress() ?: notSignedIn()
+    }
+
+    suspend fun updateTaskStatus(taskId: Int, status: Boolean) {
+        myTasks.value = myTasks.value.map { if (it.id == taskId) it.copy(isComplete = status) else it }
+        session?.updateTaskStatus(taskId, status) ?: notSignedIn()
+        fetchProgress()
     }
 }
 

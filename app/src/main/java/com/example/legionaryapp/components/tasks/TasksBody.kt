@@ -8,10 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,9 +27,13 @@ import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import androidx.compose.ui.text.style.TextOverflow
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import com.example.legionaryapp.data.categories
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
@@ -203,7 +204,7 @@ fun DeadlineTaskCard(task: Task) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(170.dp)
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colors.primary,
@@ -226,7 +227,14 @@ fun DeadlineTaskCard(task: Task) {
                     .padding(5.dp)
             )
             Spacer(modifier = Modifier.width(15.dp))
-            Text(text = task.title)
+        }
+        Text(text = "isComplete = ${task.isComplete}")
+        OutlinedButton(onClick = {
+            runBlocking {
+                UserRepository.updateTaskStatus(task.id, !task.isComplete)
+            }
+        }) {
+            Text("Update status")
         }
     }
 }
