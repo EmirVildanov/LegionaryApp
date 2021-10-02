@@ -1,6 +1,7 @@
 package com.example.legionaryapp.data
 
 import com.example.legionaryapp.network.*
+import timber.log.Timber
 
 object UserRepository {
     private var session: UserSession? = null
@@ -21,6 +22,7 @@ object UserRepository {
     suspend fun fetchEverything() {
         fetchedMe = session?.me() ?: notSignedIn()
         myTasks = session?.myTasks() ?: notSignedIn()
+        Timber.Forest.log(5, "Fetched")
     }
 }
 

@@ -2,8 +2,8 @@ package com.example.legionaryapp.network
 
 val production = false
 
-const val PROD_SERVER_URL = "heroku"
-const val LOCAL_SERVER_URL = "http://192.168.0.104:8080"
+const val PROD_SERVER_URL = "https://fierce-meadow-91592.herokuapp.com/api"
+const val LOCAL_SERVER_URL = "http://localhost:8080"
 
 val SERVER_URL = if (production) PROD_SERVER_URL else LOCAL_SERVER_URL
 

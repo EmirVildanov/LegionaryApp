@@ -28,6 +28,7 @@ suspend fun logIn(id: Int): UserSession {
 
 fun HttpRequestBuilder.includeAuth(session: UserSession) {
     header("myId", session.id.toString())
+    header("GoogleToken", "ya29.a0ARrdaM9iGfXdx9XRfRzVUt4PCVaZudaFYBLH277lI9uad-a1YqUC_AZo77LPWWdSRp3Ix8F2bQL7N60zp6onig5sc77usHL9c_81kdsd-F_qlPZy-0z93KYVIMGenv8AzVU-0Woh_Dc4fsRQF_1nGiwhxlz4")
 }
 
 suspend fun UserSession.me(): User = makeRequest {
