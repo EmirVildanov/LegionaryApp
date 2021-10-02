@@ -1,10 +1,7 @@
 package com.example.legionaryapp.data
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.example.legionaryapp.network.*
 import timber.log.Timber
 

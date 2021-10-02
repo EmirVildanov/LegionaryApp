@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -21,6 +22,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -56,18 +59,21 @@ fun WelcomeBody(
             painter = painterResource(R.drawable.e_legion_sphere),
             contentDescription = null,
             modifier = Modifier
-                .size(240.dp)
-                .clip(CircleShape)
+                .size(350.dp)
+                .clip(CircleShape),
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = { onSignInSubmitted() },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .width(250.dp)
+                .padding(vertical = 16.dp)
+                .size(50.dp),
+            shape = RoundedCornerShape(50)
         ) {
             Text(
-                text = "Войти"
+                text = "Войти",
+                fontSize = MaterialTheme.typography.h5.fontSize
             )
         }
     }
