@@ -2,6 +2,7 @@ package com.example.legionaryapp.data
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.example.legionaryapp.components.tasks.DeadlineInterval
 import com.example.legionaryapp.network.*
 import timber.log.Timber
 
@@ -36,5 +37,7 @@ object UserRepository {
 }
 
 fun List<Task>.categories() = map { it.category }.distinct()
+fun List<Task>.filterByCategory(category: Category) = filter { it.category  == category }
+fun List<Task>.filterByDeadlineType(deadLineInterval: DeadlineInterval) = filter { it == it }
 
 private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")

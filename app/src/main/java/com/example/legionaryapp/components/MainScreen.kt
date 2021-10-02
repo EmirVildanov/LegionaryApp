@@ -11,13 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 import com.example.legionaryapp.components.guide.GuideBody
 import com.example.legionaryapp.components.news.NewsBody
 import com.example.legionaryapp.components.tasks.TaskCategory
 import com.example.legionaryapp.components.tasks.TasksBody
 import com.example.legionaryapp.data.UserRepository
-import com.example.legionaryapp.data.mockCategories
+import com.example.legionaryapp.data.categories
 import com.example.legionaryapp.navigation.LegionaryScreen
 import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
@@ -29,24 +28,24 @@ fun MainScreen() {
 
         val allScreens = listOf(LegionaryScreen.News, LegionaryScreen.Tasks, LegionaryScreen.Guide)
         val navController = rememberNavController()
-        val backstackEntry = navController.currentBackStackEntryAsState()
-        val currentScreen = LegionaryScreen.fromRoute(
-            backstackEntry.value?.destination?.route
-        )
+        val selectedTab = remember { mutableStateOf(LegionaryScreen.Tasks) }
 
         Scaffold(
             bottomBar = {
                 LegionaryTabRow(
-                    allScreens = allScreens,
-                    onTabSelected = { screen -> navController.navigate(screen.name) },
-                    currentScreen = currentScreen
+                    tabScreens = allScreens,
+                    onTabSelected = { screen ->
+                        navController.navigate(screen.name)
+                        selectedTab.value = screen
+                                    },
+                    selectedTab = selectedTab.value
                 )
             }
         ) { innerPadding ->
             LegionaryNavHost(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding),
-                tasks = myTasks
+                myTasks = myTasks
             )
         }
     }
@@ -56,15 +55,21 @@ fun MainScreen() {
 fun LegionaryNavHost(
     navController: NavHostController,
     modifier: Modifier,
-    tasks: MutableState<List<Task>>
+    myTasks: MutableState<List<Task>>
 ) {
+    val selectedCategory = remember {
+        mutableStateOf(
+            myTasks.value.first().category
+        )
+    }
+
     NavHost(
         navController = navController,
         startDestination = LegionaryScreen.Tasks.name,
         modifier = modifier
     ) {
         composable(LegionaryScreen.Tasks.name) {
-            TasksBody(tasks) { categoryId ->
+            TasksBody(myTasks, selectedCategory) { categoryId ->
                 navigateToTaskCategory(navController, categoryId)
             }
         }
@@ -81,15 +86,12 @@ fun LegionaryNavHost(
             route = "$tasksName/{$categoryNameArgument}",
             arguments = listOf(
                 navArgument(categoryNameArgument) {
-                    type = NavType.StringType
+                    type = NavType.IntType
                 }
             ),
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "rally://$tasksName/{$categoryNameArgument}"
-            })
         ) { entry ->
             val category = entry.arguments?.getInt(categoryNameArgument)
-                ?.let { categoryId -> mockCategories.find { it.id == categoryId } }
+                ?.let { categoryId -> myTasks.value.categories().find { it.id == categoryId } }
             if (category != null) {
                 TaskCategory(category = category)
             }

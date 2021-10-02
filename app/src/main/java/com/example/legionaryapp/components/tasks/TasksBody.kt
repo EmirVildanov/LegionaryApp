@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.R
@@ -37,19 +38,21 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun TasksBody(
     myTasks: MutableState<List<Task>>,
+    selectedCategory: MutableState<Category>,
     onCategoryClick: (Int) -> Unit
 ) {
     val progress by remember { UserRepository.myProgress }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
-        TasksHeader(
+        SectionHeader(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxWidth(),
-            progress = progress.toFloat()
+            progress = progress.toFloat(),
+            title = listOf("Добро пожаловать", "в e-Legion"),
+            subtitle = "На данной странице отображен перечень курсов, которые необходимо пройти пройти в процессе адаптации и знакомства с e-Legion"
         )
         Categories(
             modifier = Modifier
@@ -57,20 +60,28 @@ fun TasksBody(
                 .padding(15.dp)
                 .fillMaxWidth(),
             onCategoryClick = onCategoryClick,
-            myTasks = myTasks
+            myTasks = myTasks.value,
+            selectedCategory = selectedCategory
         )
         DeadlineTasks(
             modifier = Modifier
                 .weight(3f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            myTasks = myTasks
+            myTasks = myTasks.value
         )
     }
 }
 
 @Composable
-fun TasksHeader(modifier: Modifier, progress: Float) {
+fun SectionHeader(
+    modifier: Modifier,
+    showingProgress: Boolean = true,
+    progress: Float,
+    title: List<String>,
+    subtitle: String,
+    titleTopPadding: Dp = 0.dp
+) {
     Card(modifier = modifier) {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -84,57 +95,64 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
                 .fillMaxWidth()
                 .padding(15.dp)
         ) {
-            Column(modifier = Modifier.weight(3f)) {
-                Text(
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    text = "Добро пожаловать",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    text = "в e-Legion",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
+            Column(modifier = Modifier
+                .weight(4.5f)
+                .padding(top = titleTopPadding)) {
+                for (text in title) {
+                    Text(
+                        fontSize = MaterialTheme.typography.h5.fontSize,
+                        text = text,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
                     fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                    text = "На данной странице отображен перечень курсов, которые необходимо пройти пройти в процессе адаптации и знакомства с e-Legion",
+                    text = subtitle,
+                    overflow = TextOverflow.Visible,
                     color = Color.White
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Column(
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    fontSize = MaterialTheme.typography.h5.fontSize,
-                    text = "Прогресс",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+            if (showingProgress) {
+                Spacer(modifier = Modifier.height(6.dp))
+                Column(
+                    modifier = Modifier
+                        .weight(2f)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .weight(13f)
-                            .height(20.dp),
-                        progress = progress
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        modifier = Modifier.weight(2f),
-                        fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                        text = "${progress.toInt()}%",
-                        color = Color.White
+                        fontSize = MaterialTheme.typography.h5.fontSize,
+                        text = "Прогресс",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .weight(13f)
+                                .height(20.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(20.dp)
+                                ),
+                            progress = progress / 100,
+                            backgroundColor = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            modifier = Modifier.weight(2f),
+                            fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                            text = "${progress.toInt()}%",
+                            color = Color.White
+                        )
+                    }
                 }
             }
         }
@@ -144,19 +162,10 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
 @Composable
 fun Categories(
     modifier: Modifier,
-    myTasks: MutableState<List<Task>>,
-    onCategoryClick: (Int) -> Unit
+    myTasks: List<Task>,
+    onCategoryClick: (Int) -> Unit,
+    selectedCategory: MutableState<Category>
 ) {
-    val selectedCategory = remember {
-        mutableStateOf(
-            Category(
-                1,
-                "Офис",
-                "Список курсов, включающих в себя задачи по адаптации к работе в офисе и формированию комфортного рабочего пространства"
-            )
-        )
-    }
-
     Column(modifier = modifier) {
         Text(
             text = "Задачи",
@@ -165,7 +174,7 @@ fun Categories(
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
-            items(myTasks.value.categories()) { category ->
+            items(myTasks.categories()) { category ->
                 TaskCategoryCard(
                     category = category,
                     onCategorySelection = {
@@ -194,7 +203,10 @@ fun TaskCategoryCard(
                 color = MaterialTheme.colors.primary,
                 shape = RoundedCornerShape(25.dp)
             )
-            .background(if (selectedCategory.value == category) MaterialTheme.colors.primary else Color.Transparent)
+            .background(
+                color = if (selectedCategory.value == category) MaterialTheme.colors.primary else Color.Transparent,
+                shape = RoundedCornerShape(25.dp)
+            )
             .width(200.dp)
             .padding(13.dp)
             .clickable { onCategorySelection(category) },
@@ -210,26 +222,26 @@ fun TaskCategoryCard(
         )
         Text(
             text = category.description,
+            fontSize = MaterialTheme.typography.caption.fontSize,
+            overflow = TextOverflow.Visible,
             color = if (selectedCategory.value == category) Color.White else Color.Black
         )
-        if (selectedCategory.value == category) {
-            Button(onClick = { }) {
-                Text("Открыть")
-            }
-        }
     }
 }
 
 @Composable
 fun DeadlineTasks(
     modifier: Modifier,
-    myTasks: MutableState<List<Task>>
+    myTasks: List<Task>,
+    includeHeader: Boolean = true
 ) {
     Column(modifier = modifier) {
-        Text(text = "Ближайшие задачи", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        Spacer(modifier = Modifier.height(16.dp))
+        if (includeHeader) {
+            Text(text = "Ближайшие задачи", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(myTasks.value) { task ->
+            items(myTasks) { task ->
                 DeadlineTaskCard(task)
                 Spacer(modifier = Modifier.height(15.dp))
             }
@@ -246,7 +258,7 @@ fun DeadlineTaskCard(task: Task) {
             .border(
                 width = 2.dp,
                 color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(25.dp)
             )
             .padding(25.dp),
         verticalArrangement = Arrangement.SpaceAround
@@ -260,10 +272,11 @@ fun DeadlineTaskCard(task: Task) {
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = task.title,
+                text = if (task.isComplete) "Выполнено" else "Не выполнено",
                 color = Color.White,
                 modifier = Modifier
                     .border(
@@ -286,16 +299,15 @@ fun DeadlineTaskCard(task: Task) {
             Spacer(modifier = Modifier.width(15.dp))
             Text(
                 text = "Завтра",
-                fontSize = MaterialTheme.typography.h5.fontSize,
+                fontSize = MaterialTheme.typography.subtitle1.fontSize,
                 color = MaterialTheme.colors.onSurface
             )
-            Text(text = "isComplete = ${task.isComplete}")
             OutlinedButton(onClick = {
                 runBlocking {
                     UserRepository.updateTaskStatus(task.id, !task.isComplete)
                 }
             }) {
-                Text("Обновить статус")
+                Text("*")
             }
         }
     }
@@ -304,7 +316,15 @@ fun DeadlineTaskCard(task: Task) {
 @Preview
 @Composable
 fun TasksBodyPreview() {
+    val myTasks by remember { mutableStateOf(UserRepository.myTasks) }
+    val selectedCategory = remember {
+        mutableStateOf(
+            myTasks.value.first().category
+        )
+    }
+
+
     LegionaryAppTheme {
-        TasksBody(myTasks = mutableStateOf(mockTasks), onCategoryClick = {})
+        TasksBody(myTasks = myTasks, selectedCategory = selectedCategory, onCategoryClick = {})
     }
 }

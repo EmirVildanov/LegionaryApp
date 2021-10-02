@@ -1,61 +1,60 @@
 package com.example.legionaryapp.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.legionaryapp.R
+import androidx.compose.ui.unit.sp
 import com.example.legionaryapp.navigation.LegionaryScreen
+import com.example.legionaryapp.ui.theme.Grey
+import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import java.util.Locale
 
 
 @Composable
 fun LegionaryTabRow(
-    allScreens: List<LegionaryScreen>,
+    tabScreens: List<LegionaryScreen>,
     onTabSelected: (LegionaryScreen) -> Unit,
-    currentScreen: LegionaryScreen
+    selectedTab: LegionaryScreen
 ) {
     Surface(
         Modifier
             .height(TabHeight)
-            .fillMaxWidth()
+            .fillMaxSize()
+            .padding(15.dp)
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .selectableGroup(),
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .selectableGroup(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            allScreens.forEach { screen ->
+            tabScreens.forEach { screen ->
                 LegionaryTab(
                     text = screen.name,
                     iconId = screen.iconId,
                     onSelected = { onTabSelected(screen) },
-                    selected = currentScreen == screen
+                    isSelected = selectedTab == screen
                 )
             }
         }
@@ -67,14 +66,13 @@ private fun LegionaryTab(
     text: String,
     iconId: Int,
     onSelected: () -> Unit,
-    selected: Boolean
+    isSelected: Boolean
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
             .height(TabHeight)
             .selectable(
-                selected = selected,
+                selected = isSelected,
                 onClick = onSelected,
                 role = Role.Tab,
                 interactionSource = remember { MutableInteractionSource() },
@@ -84,7 +82,8 @@ private fun LegionaryTab(
                     color = Color.Unspecified
                 )
             )
-            .clearAndSetSemantics { contentDescription = text }
+            .clearAndSetSemantics { contentDescription = text },
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(iconId),
@@ -92,13 +91,34 @@ private fun LegionaryTab(
             modifier = Modifier
                 .size(35.dp)
                 .clip(CircleShape),
-            colorFilter = if (selected) ColorFilter.tint(Color.Black) else null
+            colorFilter = if (isSelected) ColorFilter.tint(Color.Black) else null
         )
-        if (selected) {
-//            Spacer(Modifier.width(12.dp))
-            Text(text.uppercase(Locale.getDefault()))
+        if (isSelected) {
+            Text(text = text.uppercase(Locale.getDefault()), color = Color.Black, fontSize = 10.sp)
+        } else {
+            Text(text = text.uppercase(Locale.getDefault()), color = Grey, fontSize = 10.sp)
         }
     }
 }
 
-private val TabHeight = 60.dp
+@Preview
+@Composable
+fun LegionaryTabRowPreview() {
+    val selectedTab = remember { mutableStateOf(LegionaryScreen.Tasks) }
+
+    LegionaryAppTheme {
+        LegionaryTabRow(
+            tabScreens = listOf(
+                LegionaryScreen.News,
+                LegionaryScreen.Tasks,
+                LegionaryScreen.Guide
+            ),
+            onTabSelected = { screen ->
+                selectedTab.value = screen
+            },
+            selectedTab = selectedTab.value
+        )
+    }
+}
+
+private val TabHeight = 80.dp
