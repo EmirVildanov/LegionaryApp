@@ -1,7 +1,5 @@
 package com.example.legionaryapp.components.tasks
 
-import android.R.attr
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,8 +29,9 @@ import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import androidx.compose.ui.text.style.TextOverflow
 
-import android.R.attr.maxLines
 import androidx.compose.ui.layout.ContentScale
+import com.example.legionaryapp.data.categories
+import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
 
 
@@ -151,9 +150,8 @@ fun InterestTasks(modifier: Modifier) {
         )
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(modifier = Modifier.weight(1f)) {
-
-            items(myTasks) { task ->
-                InterestTaskCard(task)
+            items(myTasks.categories()) { category ->
+                InterestTaskCard(category)
                 Spacer(modifier = Modifier.width(15.dp))
             }
         }
@@ -161,7 +159,7 @@ fun InterestTasks(modifier: Modifier) {
 }
 
 @Composable
-fun InterestTaskCard(task: Task) {
+fun InterestTaskCard(category: Category) {
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -175,12 +173,12 @@ fun InterestTaskCard(task: Task) {
     ) {
         Text(
             modifier = Modifier.height(33.dp),
-            text = task.title,
+            text = category.name,
             fontSize = MaterialTheme.typography.h6.fontSize,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = task.description)
+        Text(text = category.description)
     }
 }
 

@@ -30,4 +30,6 @@ object UserRepository {
     }
 }
 
+fun List<Task>.categories() = map { it.category }.distinct()
+
 private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")
