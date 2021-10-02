@@ -5,18 +5,22 @@ import androidx.compose.material.icons.filled.*
 import com.example.legionaryapp.R
 
 enum class LegionaryScreen(
+    val screenName: String = "",
     val iconId: Int = -1,
 ) {
     Welcome,
     Main,
     Tasks(
-        iconId = R.drawable.task_icon
+        iconId = R.drawable.task_icon,
+        screenName = "Курсы"
     ),
     News(
         iconId = R.drawable.news_icon,
+        screenName = "Новости"
     ),
     Guide(
-        iconId = R.drawable.guide_icon
+        iconId = R.drawable.guide_icon,
+        screenName = "Информация"
     );
 
     companion object {

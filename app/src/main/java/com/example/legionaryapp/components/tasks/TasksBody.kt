@@ -32,6 +32,7 @@ import com.example.legionaryapp.data.isFirstWeekCompleted
 import com.example.legionaryapp.data.sortedByRelevance
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
+import com.example.legionaryapp.ui.theme.Grey
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import kotlinx.coroutines.runBlocking
 
@@ -87,6 +88,14 @@ fun SectionHeader(
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.blue_gradient_background),
+            contentDescription = "gradientBackground",
+            contentScale = ContentScale.Crop
+        )
+        Image(
+            modifier = Modifier
+                .size(10.dp)
+                .offset(x = (50).dp, y = (-50).dp),
+            painter = painterResource(id = R.drawable.pentagon),
             contentDescription = "gradientBackground",
             contentScale = ContentScale.Crop
         )
@@ -263,7 +272,7 @@ fun DeadlineTaskCard(task: Task) {
             .height(170.dp)
             .border(
                 width = 2.dp,
-                color = MaterialTheme.colors.primary,
+                color = if (task.isReachable(myTasks.isFirstWeekCompleted())) MaterialTheme.colors.primary else Grey,
                 shape = RoundedCornerShape(25.dp)
             )
             .padding(25.dp),
@@ -290,7 +299,7 @@ fun DeadlineTaskCard(task: Task) {
                         color = Color.Transparent,
                         shape = RoundedCornerShape(100.dp)
                     )
-                    .background(MaterialTheme.colors.primary)
+                    .background(if (task.isReachable(myTasks.isFirstWeekCompleted())) MaterialTheme.colors.primary else Grey)
                     .padding(5.dp)
             )
             Spacer(modifier = Modifier.width(15.dp))

@@ -51,7 +51,7 @@ fun LegionaryTabRow(
         ) {
             tabScreens.forEach { screen ->
                 LegionaryTab(
-                    text = screen.name,
+                    text = screen.screenName,
                     iconId = screen.iconId,
                     onSelected = { onTabSelected(screen) },
                     isSelected = selectedTab == screen
