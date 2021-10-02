@@ -58,9 +58,7 @@ fun LegionaryNavHost(
         modifier = modifier
     ) {
         composable(LegionaryScreen.Tasks.name) {
-            TasksBody(
-                tasks = UserRepository.tasks,
-            )
+            TasksBody()
         }
         composable(LegionaryScreen.News.name) {
             NewsBody()

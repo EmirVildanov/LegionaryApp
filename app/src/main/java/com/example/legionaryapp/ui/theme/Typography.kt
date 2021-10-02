@@ -12,6 +12,8 @@ val OpenSansFontFamily = FontFamily(
     listOf(
         Font(R.font.open_sans),
         Font(R.font.open_sans_semibold, FontWeight.SemiBold),
+        Font(R.font.open_sans_bold, FontWeight.Bold),
+        Font(R.font.open_sans_extrabold, FontWeight.ExtraBold),
     )
 )
 

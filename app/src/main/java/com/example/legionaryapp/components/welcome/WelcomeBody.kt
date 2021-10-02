@@ -72,7 +72,9 @@ fun WelcomeBody(
 
 @Composable
 fun Greeting() {
-    Column {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(text="Добро пожаловать", fontWeight = FontWeight.Bold)
         Text(text="в e-Legion", fontWeight = FontWeight.Bold)
     }

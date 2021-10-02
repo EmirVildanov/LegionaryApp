@@ -69,19 +69,6 @@ private fun LegionaryTab(
     onSelected: () -> Unit,
     selected: Boolean
 ) {
-    val color = MaterialTheme.colors.onSurface
-    val durationMillis = if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
-    val animSpec = remember {
-        tween<Color>(
-            durationMillis = durationMillis,
-            easing = LinearEasing,
-            delayMillis = TabFadeInAnimationDelay
-        )
-    }
-    val tabTintColor by animateColorAsState(
-        targetValue = if (selected) color else color.copy(alpha = InactiveTabOpacity),
-        animationSpec = animSpec
-    )
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -104,13 +91,13 @@ private fun LegionaryTab(
             painter = painterResource(iconId),
             contentDescription = null,
             modifier = Modifier
-                .size(55.dp)
+                .size(35.dp)
                 .clip(CircleShape),
             colorFilter = if (selected) ColorFilter.tint(Color.Black) else null
         )
         if (selected) {
             Spacer(Modifier.width(12.dp))
-            Text(text.uppercase(Locale.getDefault()), color = tabTintColor)
+            Text(text.uppercase(Locale.getDefault()))
         }
     }
 }
