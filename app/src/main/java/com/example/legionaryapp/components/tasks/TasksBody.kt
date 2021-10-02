@@ -39,7 +39,7 @@ import com.example.legionaryapp.network.Task
 fun TasksBody(
     onTaskCategoryClick: () -> Unit
 ) {
-    val progress = remember { mutableStateOf(1f) }
+    val progress by remember { UserRepository.myProgress }
 
     Column(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun TasksBody(
             modifier = Modifier
                 .weight(3f)
                 .fillMaxWidth(),
-            progress = progress.value
+            progress = progress.toFloat()
         )
         InterestTasks(
             modifier = Modifier
@@ -110,7 +110,7 @@ fun TasksHeader(modifier: Modifier, progress: Float) {
             ) {
                 Text(
                     fontSize = MaterialTheme.typography.h5.fontSize,
-                    text = "Прогесс",
+                    text = "Прогресс",
                     color = Color.White,
                     fontWeight = FontWeight.Bold
                 )

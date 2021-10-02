@@ -10,9 +10,9 @@ import timber.log.Timber
 
 object UserRepository {
     private var session: UserSession? = null
-    private var fetchedMe: User? = null
 
     val me: MutableState<User?> = mutableStateOf(null)
+    val myProgress = mutableStateOf(0)
 
     val myTasks: MutableState<List<Task>> = mutableStateOf(emptyList())
 
@@ -26,6 +26,7 @@ object UserRepository {
     suspend fun fetchEverything() {
         me.value = session?.me() ?: notSignedIn()
         myTasks.value = session?.myTasks() ?: notSignedIn()
+        myProgress.value = session?.myProgress() ?: notSignedIn()
         Timber.Forest.log(5, "Fetched")
     }
 }

@@ -11,6 +11,7 @@ val SERVER_URL = if (production) PROD_SERVER_URL else LOCAL_SERVER_URL
 
 val ME_ENDPOINT = "${SERVER_URL}/me"
 val MY_TASKS_ENDPOINT = "${SERVER_URL}/my-tasks"
+val PROGRESS_ENDPOINT = "${SERVER_URL}/progress"
 
 
 // POST

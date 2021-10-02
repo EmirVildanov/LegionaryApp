@@ -40,3 +40,6 @@ data class Task(
 //    val assignedUser: User,
     @SerialName("is_completed") var isComplete: Boolean
 )
+
+@Serializable
+data class Progress(val general: Int)
