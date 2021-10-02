@@ -47,6 +47,10 @@ fun List<Task>.sortedByDeadline() = sortedBy { it.deadlineType.daysNumber }
 /**
  * First -- more relevant.
  */
-fun List<Task>.sortedByRelevance() = sortedByDeadline()
+fun List<Task>.sortedByRelevance(): List<Task> {
+    val notCompleted = filter { !it.isComplete }
+    val completed = filter { it.isComplete }
+    return notCompleted.sortedByDeadline() + completed.sortedByDeadline()
+}
 
 private fun notSignedIn(): Nothing = throw RestException("Not signed in. Call signIn()")
