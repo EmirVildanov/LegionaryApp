@@ -1,25 +1,27 @@
 package com.example.legionaryapp.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import com.example.legionaryapp.R
 
 enum class LegionaryScreen(
     val screenName: String = "",
-    val iconId: Int = -1,
+    val greyIconId: Int = -1,
+    val blackIconId: Int = -1
 ) {
     Welcome,
     Main,
     Tasks(
-        iconId = R.drawable.task_icon,
+        greyIconId = R.drawable.task_grey_icon,
+        blackIconId = R.drawable.task_black_icon,
         screenName = "Курсы"
     ),
     News(
-        iconId = R.drawable.news_icon,
+        greyIconId = R.drawable.news_grey_icon,
+        blackIconId = R.drawable.news_black_icon,
         screenName = "Новости"
     ),
     Guide(
-        iconId = R.drawable.guide_icon,
+        greyIconId = R.drawable.guide_grey_icon,
+        blackIconId = R.drawable.guide_black_icon,
         screenName = "Информация"
     );
 

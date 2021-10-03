@@ -312,12 +312,12 @@ fun DeadlineTaskCard(task: Task) {
             )
             Spacer(modifier = Modifier.width(15.dp))
             Image(
-                painter = painterResource(R.drawable.alarm_icon),
+                painter = painterResource(if (task.isReachable(myTasks.isFirstWeekCompleted())) R.drawable.alarm_blue_icon else R.drawable.alarm_grey_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .size(30.dp)
                     .clip(CircleShape),
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+//                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
             )
             Spacer(modifier = Modifier.width(15.dp))
             Text(
