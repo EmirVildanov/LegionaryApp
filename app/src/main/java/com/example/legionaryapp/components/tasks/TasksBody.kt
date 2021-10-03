@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +34,7 @@ import com.example.legionaryapp.network.Task
 import com.example.legionaryapp.ui.theme.DarkestBlue
 import com.example.legionaryapp.ui.theme.Grey
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 
 @Composable
@@ -45,6 +44,9 @@ fun TasksBody(
     onCategoryClick: (Int) -> Unit
 ) {
     val progress by remember { UserRepository.myProgress }
+
+    val componentJob = Job()
+    val coroutineScope = CoroutineScope(componentJob + Dispatchers.Main)
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -75,7 +77,8 @@ fun TasksBody(
                 .weight(3f)
                 .padding(15.dp)
                 .fillMaxWidth(),
-            myTasks = myTasks.value.sortedByRelevance()
+            myTasks = myTasks.value.sortedByRelevance(),
+            coroutineScope = coroutineScope
         )
     }
 }
@@ -250,7 +253,8 @@ fun TaskCategoryCard(
 fun DeadlineTasks(
     modifier: Modifier,
     myTasks: List<Task>,
-    includeHeader: Boolean = true
+    includeHeader: Boolean = true,
+    coroutineScope: CoroutineScope
 ) {
     Column(modifier = modifier) {
         if (includeHeader) {
@@ -259,7 +263,7 @@ fun DeadlineTasks(
         }
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(myTasks) { task ->
-                DeadlineTaskCard(task)
+                DeadlineTaskCard(task, coroutineScope = coroutineScope)
                 Spacer(modifier = Modifier.height(15.dp))
             }
         }
@@ -267,7 +271,7 @@ fun DeadlineTasks(
 }
 
 @Composable
-fun DeadlineTaskCard(task: Task) {
+fun DeadlineTaskCard(task: Task, coroutineScope: CoroutineScope) {
 
     val myTasks by remember { UserRepository.myTasks }
     val isReachable = task.isReachable(myTasks.isFirstWeekCompleted())
@@ -333,7 +337,7 @@ fun DeadlineTaskCard(task: Task) {
             }
             OutlinedButton(
                 onClick = {
-                    runBlocking {
+                    coroutineScope.launch {
                         UserRepository.updateTaskStatus(task.id, !task.isComplete)
                     }
                 },

@@ -71,6 +71,7 @@ private fun LegionaryTab(
     Column(
         modifier = Modifier
             .height(TabHeight)
+            .width(80.dp)
             .selectable(
                 selected = isSelected,
                 onClick = onSelected,

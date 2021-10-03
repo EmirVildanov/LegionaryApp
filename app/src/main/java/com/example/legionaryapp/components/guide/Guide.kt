@@ -32,8 +32,14 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 
 import android.content.Intent
+import android.os.Environment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 
 
 @Composable
@@ -54,16 +60,19 @@ fun GuideBody() {
 //                .offset(x = (50).dp, y = (-50).dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
-        InfoCard(modifier = Modifier
-            .weight(3f)
-            .fillMaxWidth()
-            .height(170.dp)
-            .border(
-                width = 2.dp,
-                color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(25.dp)
-            )
-            .padding(25.dp))
+        InfoCard(
+            modifier = Modifier
+                .padding(10.dp)
+                .weight(3f)
+                .fillMaxWidth()
+                .height(170.dp)
+                .border(
+                    width = 2.dp,
+                    color = MaterialTheme.colors.primary,
+                    shape = RoundedCornerShape(25.dp)
+                )
+                .padding(25.dp)
+        )
     }
 }
 
@@ -77,14 +86,18 @@ fun InfoCard(modifier: Modifier) {
         verticalArrangement = Arrangement.SpaceAround
     ) {
         Text(
-            modifier = Modifier.height(33.dp),
+            modifier = Modifier
+                .height(33.dp)
+                .weight(2f),
             text = "Гайд для новых сотрудников", fontWeight = FontWeight.Bold,
             fontSize = MaterialTheme.typography.h6.fontSize,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(3f),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -96,24 +109,39 @@ fun InfoCard(modifier: Modifier) {
                     .size(70.dp)
                     .clip(CircleShape),
             )
-            Column(modifier = Modifier.weight(7f), verticalArrangement = Arrangement.SpaceBetween) {
+            Column(
+                modifier = Modifier
+                    .weight(7f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = "Познавай наш мир!",
                     fontSize = MaterialTheme.typography.body1.fontSize
                 )
-                Row {
+                Spacer(modifier = Modifier.width(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Button(
                         onClick = {
                             runBlocking {
-                                val manager =
-                                    context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
-                                val uri: Uri =
-                                    Uri.parse("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf")
-                                val request = DownloadManager.Request(uri)
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                                manager?.let {
-                                    val reference: Long = it.enqueue(request)
+                                URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf").openStream().use { input ->
+                                    FileOutputStream(File("/sdcard/download")).use { output ->
+                                        input.copyTo(output)
+                                    }
                                 }
+//                                val manager =
+//                                    context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
+//                                val uri: Uri =
+//                                    Uri.parse("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf")
+//                                val request = DownloadManager.Request(uri)
+//                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+//                                manager?.let {
+//                                    val reference: Long = it.enqueue(request)
+//                                }
                             }
                         },
                         shape = RoundedCornerShape(10.dp),
@@ -121,11 +149,11 @@ fun InfoCard(modifier: Modifier) {
                     ) {
                         Text("Скачать")
                     }
-                    Spacer(modifier = Modifier.width(15.dp))
                     OutlinedButton(
                         onClick = {
                             runBlocking {
-                                val url = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+                                val url =
+                                    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
                                 val i = Intent(Intent.ACTION_VIEW)
                                 i.data = Uri.parse(url)
                                 context.startActivity(i)
@@ -140,5 +168,12 @@ fun InfoCard(modifier: Modifier) {
             }
         }
     }
+}
 
+@Preview
+@Composable
+fun GuideBodyPreview() {
+    LegionaryAppTheme {
+        GuideBody()
+    }
 }

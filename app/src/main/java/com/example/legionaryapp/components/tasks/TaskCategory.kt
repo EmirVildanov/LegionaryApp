@@ -17,6 +17,9 @@ import com.example.legionaryapp.data.progress
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.DeadlineType
 import com.example.legionaryapp.ui.theme.Grey
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 enum class DeadlineTab(val deadlineName: String, val deadlineType: DeadlineType) {
     WeekTab("Ближайшие", DeadlineType.Week),
@@ -31,8 +34,11 @@ fun TaskCategory(category: Category) {
     }
 
     val myTasks = remember { UserRepository.myTasks }
-
     val tasksByCategory = myTasks.value.filterByCategory(category)
+
+    val componentJob = Job()
+    val coroutineScope = CoroutineScope(componentJob + Dispatchers.Main)
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         SectionHeader(
@@ -58,7 +64,8 @@ fun TaskCategory(category: Category) {
                 .padding(15.dp)
                 .fillMaxWidth(),
             myTasks = tasksByCategory.filterByDeadlineType(currentTab.value),
-            includeHeader = false
+            includeHeader = false,
+            coroutineScope = coroutineScope
         )
     }
 }
