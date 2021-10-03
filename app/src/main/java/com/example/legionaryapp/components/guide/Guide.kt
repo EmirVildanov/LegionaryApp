@@ -133,15 +133,6 @@ fun InfoCard(modifier: Modifier) {
                                         input.copyTo(output)
                                     }
                                 }
-//                                val manager =
-//                                    context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager?
-//                                val uri: Uri =
-//                                    Uri.parse("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf")
-//                                val request = DownloadManager.Request(uri)
-//                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-//                                manager?.let {
-//                                    val reference: Long = it.enqueue(request)
-//                                }
                             }
                         },
                         shape = RoundedCornerShape(10.dp),
