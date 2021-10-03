@@ -24,16 +24,16 @@ object EventsRepository {
         delay(100)
         events.value = events.value + listOf(
             Event(
-                id = events.value.size,
+                id = (0..10000).random(),
                 title = title,
                 description = description
             )
         )
     }
 
-    suspend fun removeEvent(event: Event) {
+    suspend fun removeEvent(eventId: Int) {
         delay(100)
-        events.value = events.value.filter { it != event }
+        events.value = events.value.filter { it.id != eventId }
     }
 }
 

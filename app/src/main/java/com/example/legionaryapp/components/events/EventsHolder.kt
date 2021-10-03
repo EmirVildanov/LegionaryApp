@@ -121,7 +121,7 @@ fun EventCard(event: Event) {
             OutlinedButton(
                 onClick = {
                     runBlocking {
-                        EventsRepository.removeEvent(event)
+                        EventsRepository.removeEvent(event.id)
                     }
                 },
             ) {

@@ -26,9 +26,6 @@ enum class EventTabEnum(val eventName: String) {
 
 @Composable
 fun EventsBody() {
-    runBlocking {
-        EventsRepository.fetchEvents()
-    }
     val events = remember {
         EventsRepository.events
     }
