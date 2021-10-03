@@ -16,8 +16,8 @@ object EventsRepository {
         events = events + listOf(
             Event(
                 id = events.size,
-                title = "Yeah ${events.size}",
-                description = "Nice"
+                title = title,
+                description = description
             )
         )
     }
