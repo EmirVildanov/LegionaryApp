@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.legionaryapp.R
 import com.example.legionaryapp.components.news.AddEventForm
 import com.example.legionaryapp.components.tasks.*
+import com.example.legionaryapp.data.EventsRepository
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.ui.theme.Grey
 
@@ -24,6 +25,9 @@ enum class EventTabEnum(val eventName: String) {
 @Composable
 fun EventsBody() {
 
+    val events = remember {
+        EventsRepository.events
+    }
     val currentTab = remember {
         mutableStateOf(EventTabEnum.AllEventsTab)
     }
@@ -49,12 +53,12 @@ fun EventsBody() {
             onTabSelection = { tab -> currentTab.value = tab })
         Spacer(modifier = Modifier.height(30.dp))
         if (currentTab.value == EventTabEnum.AllEventsTab) {
-            DeadlineTasks(
+            EventsHolder(
                 modifier = Modifier
                     .weight(4f)
                     .padding(15.dp)
                     .fillMaxWidth(),
-                myTasks = UserRepository.myTasks.value,
+                events = events.value,
                 includeHeader = false
             )
         } else {
