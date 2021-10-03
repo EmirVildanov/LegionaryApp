@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -72,14 +73,20 @@ fun EventCard(event: Event) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
+        Text(
+            modifier = Modifier.height(33.dp),
+            text = event.description, fontWeight = FontWeight.Bold,
+            fontSize = MaterialTheme.typography.body1.fontSize,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = "Я пойду",
-                color = Color.White,
+            OutlinedButton(
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primaryVariant),
                 modifier = Modifier
                     .border(
                         width = 1.dp,
@@ -87,8 +94,15 @@ fun EventCard(event: Event) {
                         shape = RoundedCornerShape(100.dp)
                     )
                     .background(color)
-                    .padding(5.dp)
-            )
+                    .padding(5.dp),
+                onClick = {
+//                    runBlocking {
+//                        EventsRepository.updateTaskStatus(task.id, !task.isComplete)
+//                    }
+                },
+            ) {
+                Text("Я пойду")
+            }
             Spacer(modifier = Modifier.width(15.dp))
             Image(
                 painter = painterResource(R.drawable.alarm_blue_icon),
@@ -105,12 +119,12 @@ fun EventCard(event: Event) {
             )
             OutlinedButton(
                 onClick = {
-//                    runBlocking {
-//                        EventsRepository.updateTaskStatus(task.id, !task.isComplete)
-//                    }
+                    runBlocking {
+                        EventsRepository.removeEvent(event)
+                    }
                 },
             ) {
-                Text("Опустить")
+                Text("X")
             }
         }
     }

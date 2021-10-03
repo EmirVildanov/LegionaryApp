@@ -27,6 +27,11 @@ object EventsRepository {
             )
         )
     }
+
+    suspend fun removeEvent(event: Event) {
+        delay(100)
+        events.value = events.value.filter { it != event }
+    }
 }
 
 @Serializable
