@@ -14,7 +14,10 @@ object EventsRepository {
 
     suspend fun fetchEvents() {
         delay(100)
-        events.value = listOf(Event(id = 0, title = "Yeah", description = "Nice", eventDeadlineType = EventDeadlineType.Today))
+        events.value = listOf(
+            Event(id = 0, title = "Yeah", description = "Nice", eventDeadlineType = EventDeadlineType.Week),
+            Event(id = 1, title = "Go play bideo games", description = "The Sims 2", eventDeadlineType = EventDeadlineType.Today)
+        )
     }
 
     suspend fun postEvent(title: String, description: String) {
@@ -42,6 +45,9 @@ data class Event(
     val description: String,
     @SerialName("event_deadline_type") val eventDeadlineType: EventDeadlineType = EventDeadlineType.Week
 )
+
+fun List<Event>.sortedByDeadline() = sortedBy { it.eventDeadlineType.daysNumber }
+
 
 @Serializable
 enum class EventDeadlineType(val daysNumber: Int) {

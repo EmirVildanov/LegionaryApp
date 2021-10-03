@@ -29,6 +29,7 @@ import com.example.legionaryapp.data.EventsRepository
 import kotlinx.coroutines.runBlocking
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import com.example.legionaryapp.data.sortedByDeadline
 
 @Composable
 fun EventsHolder(
@@ -42,7 +43,7 @@ fun EventsHolder(
             Spacer(modifier = Modifier.height(16.dp))
         }
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(events) { event ->
+            items(events.sortedByDeadline()) { event ->
                 EventCard(event)
                 Spacer(modifier = Modifier.height(15.dp))
             }

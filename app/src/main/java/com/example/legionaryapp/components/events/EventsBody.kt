@@ -15,6 +15,8 @@ import com.example.legionaryapp.components.tasks.*
 import com.example.legionaryapp.data.EventsRepository
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.ui.theme.Grey
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.runBlocking
 
 
 enum class EventTabEnum(val eventName: String) {
@@ -24,7 +26,9 @@ enum class EventTabEnum(val eventName: String) {
 
 @Composable
 fun EventsBody() {
-
+    runBlocking {
+        EventsRepository.fetchEvents()
+    }
     val events = remember {
         EventsRepository.events
     }
