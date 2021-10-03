@@ -32,7 +32,7 @@ import com.example.legionaryapp.data.isFirstWeekCompleted
 import com.example.legionaryapp.data.sortedByRelevance
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
-import com.example.legionaryapp.ui.theme.Green
+import com.example.legionaryapp.ui.theme.DarkestBlue
 import com.example.legionaryapp.ui.theme.Grey
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import kotlinx.coroutines.runBlocking
@@ -273,7 +273,7 @@ fun DeadlineTaskCard(task: Task) {
     val isReachable = task.isReachable(myTasks.isFirstWeekCompleted())
 
     val color = when {
-        task.isComplete -> Green
+        task.isComplete -> DarkestBlue
         isReachable -> MaterialTheme.colors.primary
         else -> Grey
     }
@@ -314,21 +314,23 @@ fun DeadlineTaskCard(task: Task) {
                     .background(color)
                     .padding(5.dp)
             )
-            Spacer(modifier = Modifier.width(15.dp))
-            Image(
-                painter = painterResource(if (task.isReachable(myTasks.isFirstWeekCompleted())) R.drawable.alarm_blue_icon else R.drawable.alarm_grey_icon),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(30.dp)
-                    .clip(CircleShape),
+            if (!task.isComplete) {
+                Spacer(modifier = Modifier.width(15.dp))
+                Image(
+                    painter = painterResource(if (task.isReachable(myTasks.isFirstWeekCompleted())) R.drawable.alarm_blue_icon else R.drawable.alarm_grey_icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(CircleShape),
 //                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
-            )
-            Spacer(modifier = Modifier.width(15.dp))
-            Text(
-                text = task.deadlineType.toString(),
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                color = MaterialTheme.colors.onSurface
-            )
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = task.deadlineType.toString(),
+                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                    color = MaterialTheme.colors.onSurface
+                )
+            }
             OutlinedButton(
                 onClick = {
                     runBlocking {

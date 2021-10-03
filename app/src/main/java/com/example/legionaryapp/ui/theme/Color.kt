@@ -7,4 +7,3 @@ val DarkBlue = Color(0xFF02AEFF)
 val DarkestBlue = Color(0xFF1C273A)
 val Grey = Color(0xFF8CA6C2)
 val BLack = Color(0xFF000000)
-val Green = Color.Green
