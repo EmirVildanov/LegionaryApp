@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue_200">#FF03B1FC</color>
-    <color name="blue_500">#FF008FCC</color>
-    <color name="blue_700">#FF0063CC</color>
-    <color name="grey_200">#FF8CA6C2</color>
-    <color name="grey_700">#FF79807F</color>
+    <color name="LightBlue">#FF02AEFF</color>
+    <color name="DarkBlue">#FF02AEFF</color>
+    <color name="DarkestBlue">#FF1C273A</color>
+    <color name="Grey">#FF8CA6C2</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
