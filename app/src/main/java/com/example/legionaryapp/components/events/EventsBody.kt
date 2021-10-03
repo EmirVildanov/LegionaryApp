@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.legionaryapp.R
+import com.example.legionaryapp.components.news.AddEventForm
 import com.example.legionaryapp.components.tasks.*
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.ui.theme.Grey
@@ -63,7 +64,7 @@ fun EventsBody() {
                     .padding(15.dp)
                     .fillMaxWidth()
             ) {
-                Text("Add")
+                AddEventForm()
             }
         }
     }
