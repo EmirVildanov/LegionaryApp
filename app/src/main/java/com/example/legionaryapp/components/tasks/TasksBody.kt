@@ -32,6 +32,7 @@ import com.example.legionaryapp.data.isFirstWeekCompleted
 import com.example.legionaryapp.data.sortedByRelevance
 import com.example.legionaryapp.network.Category
 import com.example.legionaryapp.network.Task
+import com.example.legionaryapp.ui.theme.Green
 import com.example.legionaryapp.ui.theme.Grey
 import com.example.legionaryapp.ui.theme.LegionaryAppTheme
 import kotlinx.coroutines.runBlocking
@@ -265,6 +266,13 @@ fun DeadlineTasks(
 fun DeadlineTaskCard(task: Task) {
 
     val myTasks by remember { UserRepository.myTasks }
+    val isReachable = task.isReachable(myTasks.isFirstWeekCompleted())
+
+    val color = when {
+        task.isComplete -> Green
+        isReachable -> MaterialTheme.colors.primary
+        else -> Grey
+    }
 
     Column(
         modifier = Modifier
@@ -272,7 +280,7 @@ fun DeadlineTaskCard(task: Task) {
             .height(170.dp)
             .border(
                 width = 2.dp,
-                color = if (task.isReachable(myTasks.isFirstWeekCompleted())) MaterialTheme.colors.primary else Grey,
+                color = color,
                 shape = RoundedCornerShape(25.dp)
             )
             .padding(25.dp),
@@ -299,7 +307,7 @@ fun DeadlineTaskCard(task: Task) {
                         color = Color.Transparent,
                         shape = RoundedCornerShape(100.dp)
                     )
-                    .background(if (task.isReachable(myTasks.isFirstWeekCompleted())) MaterialTheme.colors.primary else Grey)
+                    .background(color)
                     .padding(5.dp)
             )
             Spacer(modifier = Modifier.width(15.dp))
@@ -323,7 +331,7 @@ fun DeadlineTaskCard(task: Task) {
                         UserRepository.updateTaskStatus(task.id, !task.isComplete)
                     }
                 },
-                enabled = task.isReachable(myTasks.isFirstWeekCompleted())
+                enabled = isReachable
             ) {
                 Text("*")
             }
