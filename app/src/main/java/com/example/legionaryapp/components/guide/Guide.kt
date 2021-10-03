@@ -47,7 +47,11 @@ fun GuideBody() {
             showingProgress = false,
             title = listOf("Информация"),
             subtitle = "Здесь находится вся информация, необходимая в процессе адаптации и знакомства с e-Legion",
-            titleTopPadding = 40.dp
+            titleTopPadding = 40.dp,
+            imageId = R.drawable.circle,
+            imageModifier = Modifier
+                .size(5.dp)
+//                .offset(x = (50).dp, y = (-50).dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
         InfoCard(modifier = Modifier

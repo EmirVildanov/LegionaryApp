@@ -55,7 +55,11 @@ fun TasksBody(
                 .fillMaxWidth(),
             progress = progress.toFloat(),
             title = listOf("Добро пожаловать", "в e-Legion"),
-            subtitle = "На данной странице отображен перечень курсов, которые необходимо пройти пройти в процессе адаптации и знакомства с e-Legion"
+            subtitle = "На данной странице отображен перечень курсов, которые необходимо пройти пройти в процессе адаптации и знакомства с e-Legion",
+            imageId = R.drawable.pentagon,
+            imageModifier = Modifier
+                .size(5.dp)
+                .offset(x = (50).dp, y = (-50).dp)
         )
         Categories(
             modifier = Modifier
@@ -83,7 +87,9 @@ fun SectionHeader(
     progress: Float,
     title: List<String>,
     subtitle: String,
-    titleTopPadding: Dp = 0.dp
+    titleTopPadding: Dp = 0.dp,
+    imageId: Int? = null,
+    imageModifier: Modifier? = null
 ) {
     Card(modifier = modifier) {
         Image(
@@ -92,14 +98,12 @@ fun SectionHeader(
             contentDescription = "gradientBackground",
             contentScale = ContentScale.Crop
         )
-        Image(
-            modifier = Modifier
-                .size(10.dp)
-                .offset(x = (50).dp, y = (-50).dp),
-            painter = painterResource(id = R.drawable.pentagon),
-            contentDescription = "gradientBackground",
+        imageId?.let { Image(
+            modifier = imageModifier!!,
+            painter = painterResource(id = imageId),
+            contentDescription = "HeaderOrnerImage",
             contentScale = ContentScale.Crop
-        )
+        ) }
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier

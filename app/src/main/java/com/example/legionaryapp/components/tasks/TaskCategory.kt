@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.legionaryapp.R
 import com.example.legionaryapp.data.UserRepository
 import com.example.legionaryapp.data.filterByCategory
 import com.example.legionaryapp.data.filterByDeadlineType
@@ -41,7 +42,11 @@ fun TaskCategory(category: Category) {
             progress = tasksByCategory.progress().toFloat(),
             title = listOf(category.name),
             subtitle = category.description,
-            titleTopPadding = 30.dp
+            titleTopPadding = 30.dp,
+            imageId = R.drawable.flower,
+            imageModifier = Modifier
+                .size(5.dp)
+                .offset(x = (50).dp, y = (-50).dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
         DeadlineIntervalTabs(

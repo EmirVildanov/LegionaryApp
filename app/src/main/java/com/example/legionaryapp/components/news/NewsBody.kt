@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.legionaryapp.R
 import com.example.legionaryapp.components.tasks.DeadlineTasks
 import com.example.legionaryapp.components.tasks.SectionHeader
 import com.example.legionaryapp.data.UserRepository
@@ -20,7 +21,10 @@ fun NewsBody() {
             title = listOf("Новости"),
             subtitle = "\n" +
                     "Кто-то решил собраться поиграть в футбол или волейбол? Хотите узнать когда у коллеги день рождения? Здесь вы можете следить за всеми новостями e-Legion",
-            titleTopPadding = 40.dp
+            titleTopPadding = 40.dp,
+            imageId = R.drawable.circle,
+            imageModifier = Modifier
+                .size(5.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
         DeadlineTasks(
