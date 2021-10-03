@@ -8,11 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.legionaryapp.components.guide.GuideBody
-import com.example.legionaryapp.components.news.NewsBody
+import com.example.legionaryapp.components.events.EventsBody
 import com.example.legionaryapp.components.tasks.TaskCategory
 import com.example.legionaryapp.components.tasks.TasksBody
 import com.example.legionaryapp.data.UserRepository
@@ -79,7 +78,7 @@ fun LegionaryNavHost(
             }
         }
         composable(LegionaryScreen.News.name) {
-            NewsBody()
+            EventsBody()
         }
         composable(LegionaryScreen.Guide.name) {
             GuideBody()
